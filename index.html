@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>情人节特别企划 ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --heart-color: #ff3366;
+            --bg-gradient: linear-gradient(45deg, #ff99cc, #ff3366);
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            background: var(--bg-gradient);
+            font-family: 'Parisienne', cursive;
+            overflow: hidden;
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 2rem;
+            color: white;
+        }
+
+        .heart {
+            font-size: 4rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+
+        .message-box {
+            background: rgba(255,255,255,0.2);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+
+        .floating-text {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .love-letter {
+            display: none;
+            background: white;
+            color: #ff3366;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    
+    <div class="container">
+        <h1 class="animate__animated animate__bounceIn">💖 情人节快乐！ 💖</h1>
+        
+        <div class="message-box">
+            <div class="floating-text">
+                <h2>亲爱的 <span id="loverName">[名字]</span></h2>
+                <p>你愿意成为我的唯一吗？</p>
+                <div class="heart" onclick="showLoveLetter()">❤️</div>
+            </div>
+
+            <div id="loveLetter" class="love-letter">
+                <h3>给最特别的你：</h3>
+                <p>在千万人中遇见你，就像繁星找到了夜空...</p>
+                <button onclick="startFireworks()">🎆 点亮我们的烟花</button>
+            </div>
+        </div>
+
+        <div id="fireworks"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // 粒子背景配置
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80 },
+                color: { value: '#ffffff' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5 },
+                size: { value: 3 },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: 'none',
+                    random: false,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false,
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: { enable: true, mode: 'repulse' },
+                    onclick: { enable: true, mode: 'push' },
+                    resize: true
+                }
+            }
+        });
+
+        function showLoveLetter() {
+            document.getElementById('loveLetter').style.display = 'block';
+            document.querySelector('.floating-text').style.animation = 'none';
+        }
+
+        function startFireworks() {
+            const fireworks = document.getElementById('fireworks');
+            for(let i=0; i<50; i++){
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: absolute;
+                    width: 10px;
+                    height: 10px;
+                    background: ${['#ff3366','#ff99cc','#ffffff'][i%3]};
+                    border-radius: 50%;
+                    left: ${Math.random()*100}%;
+                    top: ${Math.random()*100}%;
+                    animation: explode 1s ease-out;
+                `;
+                fireworks.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 1000);
+            }
+        }
+
+        // 动态更新名字
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = urlParams.get('name') || '我的爱人';
+        document.getElementById('loverName').textContent = name;
+    </script>
+</body>
+</html>
